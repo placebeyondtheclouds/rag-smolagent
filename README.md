@@ -1,4 +1,4 @@
-# local RAG
+# local RAG agent
 
 software stack:
 
@@ -6,7 +6,6 @@ software stack:
 - ollama
 - chromadb
 - langchain
-- sentence-transformers
 - gradio
 
 > [!WARNING]
