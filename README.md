@@ -1,3 +1,17 @@
+# local RAG
+
+software stack:
+
+- smolagent
+- ollama
+- chromadb
+- langchain
+- sentence-transformers
+- gradio
+
+> [!WARNING]
+> work in progress
+
 needs a GPU with 24GB of VRAM and ollama instance running in docker or locally
 
 - create a model with a larger context window:
