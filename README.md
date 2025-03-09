@@ -1,6 +1,6 @@
-needs a GPU and ollama in docker or locally
+needs a GPU with 24GB of VRAM and ollama instance running in docker or locally
 
-- create a model with a larger context window
+- create a model with a larger context window:
 
 ```bash
 docker exec ollama sh -c "echo 'FROM qwen2.5:7b-instruct-q4_K_M\nPARAMETER num_ctx 32768' | tee qwen2.5:7b-instruct-q4_K_M-32k.cfg"

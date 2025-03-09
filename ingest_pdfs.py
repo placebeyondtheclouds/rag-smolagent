@@ -23,8 +23,7 @@ def ingest_pdfs_incrementally(data_dir: str, persist_directory: str):
         model_kwargs={'device': 'cuda'}
     )
 
-    print("Initializing empty vector store...")
-    # Create an empty store
+    print("Initializing vector store...")
     vectordb = Chroma(
         collection_name="my_pdfs",
         embedding_function=embeddings,

@@ -52,7 +52,7 @@ embeddings = HuggingFaceEmbeddings(
     model_kwargs={'device': 'cuda'}
 )
 db_dir = os.path.join(os.path.dirname(__file__), "chroma_db")
-vectordb = Chroma(collection_name="my_pdfs", persist_directory=db_dir, embedding_function=embeddings, create_collection_if_not_exists=False)
+vectordb = Chroma(collection_name="my_pdfs", persist_directory=db_dir, embedding_function=embeddings)
 retriever_tool = RetrieverTool(vectordb)
 
 
