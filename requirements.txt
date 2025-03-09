@@ -1,0 +1,7 @@
+smolagents
+dotenv
+langchain_chroma
+langchain_huggingface
+langchain_community
+langchain
+transformers

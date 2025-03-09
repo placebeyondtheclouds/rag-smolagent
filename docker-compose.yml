@@ -1,0 +1,22 @@
+services:
+  rag-smolagent:
+    container_name: rag-smolagent
+    build:
+      dockerfile: Dockerfile
+    environment:
+      GRADIO_SERVER_PORT: 7860
+      GRADIO_SERVER_NAME: "0.0.0.0"
+      GRADIO_ANALYTICS_ENABLED: "false"
+      GRADIO_SHARE: "false"
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - rag-smolagent_storage:/app
+      - ~/shared:/app/data:r
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
