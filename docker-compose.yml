@@ -9,6 +9,8 @@ services:
       GRADIO_ANALYTICS_ENABLED: "false"
       GRADIO_SHARE: "false"
     restart: unless-stopped
+    ports:
+      - "7860:7860"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - rag-smolagent_storage:/app
