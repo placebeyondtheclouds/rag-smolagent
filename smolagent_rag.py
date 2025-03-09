@@ -1,4 +1,4 @@
-from smolagents import OpenAIServerModel, ToolCallingAgent, GradioUI, Tool
+from smolagents import OpenAIServerModel, ToolCallingAgent, GradioUI, Tool, LiteLLMModel
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -14,7 +14,8 @@ def get_model(model_id):
     return OpenAIServerModel(
             model_id=model_id,
             api_base=OLLAMA_URL,
-            api_key="ollama"
+            api_key="ollama",
+            max_tokens=32768,
         )
 
 
@@ -22,7 +23,7 @@ def get_model(model_id):
 class RetrieverTool(Tool):
     name = "retriever"
     description = (
-        "Uses semantic search to retrieve the parts of documentation that could be most relevant to answer your query."
+        "Uses semantic search to retrieve the parts of documents that could be most relevant to answer your query."
     )
     inputs = {
         "query": {
@@ -57,12 +58,19 @@ retriever_tool = RetrieverTool(vectordb)
 
 
 model = get_model(tool_model_id)
+# model = LiteLLMModel(
+#     model_id=tool_model_id,
+#     api_base=OLLAMA_URL,
+#     api_key="ollama",
+#     max_tokens=32768,
+# )
 
 
 agent = ToolCallingAgent(
     tools=[retriever_tool],
     model=model,
-    add_base_tools=False, 
+    max_steps=5,
+
 )
 
 
