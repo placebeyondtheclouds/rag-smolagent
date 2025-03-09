@@ -1,4 +1,4 @@
-needs GPU and ollama
+needs a GPU and ollama in docker or locally
 
 - create a model with a larger context window
 
@@ -18,8 +18,12 @@ OLLAMA_URL=http://ollama:11434/v1
 
 - deploy with docker:
 
+`mkdir ~/shared`
+
 ```bash
-docker compose up -d
+docker compose up -d --build --force-recreate
+docker exec -it rag-smolagent python ingest_pdfs.py
+docker restart rag-smolagent
 ```
 
 **or**
@@ -40,6 +44,8 @@ pip install -r requirements.txt
 python ingest_pdfs.py
 GRADIO_SERVER_NAME="0.0.0.0" GRADIO_SHARE="False" GRADIO_ANALYTICS_ENABLED="False" python smolagent_rag.py
 ```
+
+- open `http://localhost:7860/` in a browser
 
 # references
 
