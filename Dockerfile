@@ -52,4 +52,4 @@ COPY --chown=nonroot:nonroot ./.env .
 EXPOSE 7860
 ENTRYPOINT ["python"]
 CMD ["smolagent_rag.py"]
-# CMD ["tail", "-f", "/dev/null"]
+# CMD ["/usr/bin/tail", "-f", "/dev/null"]

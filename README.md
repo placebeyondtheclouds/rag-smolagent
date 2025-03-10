@@ -66,3 +66,4 @@ GRADIO_SERVER_NAME="0.0.0.0" GRADIO_SHARE="False" GRADIO_ANALYTICS_ENABLED="Fals
 - https://github.com/AgentOps-AI/agentops/blob/main/examples/smolagents_examples/multi_smolagents_system.ipynb
 - https://github.com/huggingface/smolagents/blob/main/examples/rag_using_chromadb.py
 - https://github.com/coleam00/ottomator-agents/tree/main/r1-distill-rag
+- https://github.com/ernanhughes/deepresearch/blob/main/deepresearch/app.py
