@@ -13,6 +13,12 @@ software stack:
 
 needs a GPU with 24GB of VRAM and ollama instance running in docker or locally
 
+## todo
+
+- [] the tool returns only part of the metadata for some reason
+
+## deploy
+
 - create a model with a larger context window:
 
 ```bash
