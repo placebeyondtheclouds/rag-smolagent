@@ -38,7 +38,7 @@ def ingest_pdfs_incrementally(data_dir: str, persist_directory: str):
             chunk_overlap=20,
             add_start_index=True,
             strip_whitespace=True,
-            separators=["\n\n", "\n", ".", " ", "", '。', '！', '!', '？', '?'],
+            separators=["\n\n", "\n", ".", " ", '。', '！', '!', '？', '?', ""],
             )
 
     for pdf_file in tqdm(pdf_file_paths, desc="Processing PDFs"):
