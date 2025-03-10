@@ -32,7 +32,9 @@ class RetrieverTool(Tool):
         assert isinstance(query, str), "Your search query must be a string"
         docs = self.vector_store.similarity_search(query, k=10)
         return "\nRetrieved documents:\n" + "".join(
-            [f"\n\n===== Document {str(i)} =====\n" + doc.page_content for i, doc in enumerate(docs)]
+            # [f"\n\n===== Title {doc.metadata['title']}, Author {doc.metadata['author']}\n===== Source {doc.metadata['source']} =====\n" + doc.page_content for i, doc in enumerate(docs)]
+            [f"\n\n===== {doc.metadata}=====\n" + doc.page_content for i, doc in enumerate(docs)]
+        
         )
 
 

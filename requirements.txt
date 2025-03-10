@@ -5,4 +5,3 @@ langchain_huggingface
 langchain_community
 langchain
 transformers
-ollama
