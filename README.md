@@ -17,7 +17,7 @@ The idea was to make a smart semantic search over my Zotero library.
 
 ## todo
 
-- [] the tool returns only part of the metadata for some reason
+- [ ] the tool returns only part of the metadata for some reason
 
 ## deploy
 
