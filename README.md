@@ -1,6 +1,6 @@
 # local RAG agent (a part of my toolkit)
 
-The idea was to make a smart semantic search over my Zotero library.
+The idea was to make a smart semantic search over my Zotero library. Very scalable incremental ingestion of a directory with pdfs (of those that are not already in the database). `PyPDFLoader` reads a pdf, `RecursiveCharacterTextSplitter` with `thenlper/gte-small` tokenizer splits the text into chunks and Chroma ingests them with the metadata and embeddings calculated by `sentence-transformers/all-mpnet-base-v2`. Then `ToolCallingAgent` use an LLM to form a queries to the database and run the LLM over the retrieved content.
 
 > [!WARNING]
 > work in progress
@@ -78,4 +78,3 @@ GRADIO_SERVER_NAME="0.0.0.0" GRADIO_SHARE="False" GRADIO_ANALYTICS_ENABLED="Fals
 - https://github.com/coleam00/ottomator-agents/tree/main/r1-distill-rag
 - https://github.com/ernanhughes/deepresearch/blob/main/deepresearch/app.py
 - https://github.com/RvTechiNNovate/Vector-DB-Handbook/
--
