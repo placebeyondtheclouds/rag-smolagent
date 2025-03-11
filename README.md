@@ -1,17 +1,19 @@
-# local RAG agent (a part of my local toolkit)
+# local RAG agent
 
-software stack:
+The idea was to make a smart semantic search over my Zotero library.
+
+> [!WARNING]
+> work in progress
+
+needs a GPU with 24GB of VRAM and ollama instance running in docker or locally
+
+## software stack:
 
 - smolagent
 - ollama
 - chromadb
 - langchain
 - gradio
-
-> [!WARNING]
-> work in progress
-
-needs a GPU with 24GB of VRAM and ollama instance running in docker or locally
 
 ## todo
 
@@ -73,5 +75,3 @@ GRADIO_SERVER_NAME="0.0.0.0" GRADIO_SHARE="False" GRADIO_ANALYTICS_ENABLED="Fals
 - https://github.com/huggingface/smolagents/blob/main/examples/rag_using_chromadb.py
 - https://github.com/coleam00/ottomator-agents/tree/main/r1-distill-rag
 - https://github.com/ernanhughes/deepresearch/blob/main/deepresearch/app.py
-- https://dev.to/eteimz/understanding-langchains-recursivecharactertextsplitter-2846
-- https://github.com/samwit/smolagents_examples/blob/main/smol_ollama.py
