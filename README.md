@@ -1,4 +1,4 @@
-# local RAG agent
+# local RAG agent (a part of my local toolkit)
 
 software stack:
 
@@ -73,3 +73,5 @@ GRADIO_SERVER_NAME="0.0.0.0" GRADIO_SHARE="False" GRADIO_ANALYTICS_ENABLED="Fals
 - https://github.com/huggingface/smolagents/blob/main/examples/rag_using_chromadb.py
 - https://github.com/coleam00/ottomator-agents/tree/main/r1-distill-rag
 - https://github.com/ernanhughes/deepresearch/blob/main/deepresearch/app.py
+- https://dev.to/eteimz/understanding-langchains-recursivecharactertextsplitter-2846
+- https://github.com/samwit/smolagents_examples/blob/main/smol_ollama.py
