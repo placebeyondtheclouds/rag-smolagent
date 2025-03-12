@@ -1,4 +1,4 @@
-from smolagents import OpenAIServerModel, ToolCallingAgent, GradioUI, Tool, LiteLLMModel
+from smolagents import OpenAIServerModel, ToolCallingAgent, GradioUI, Tool
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -8,12 +8,19 @@ from langchain_community.document_transformers.embeddings_redundant_filter impor
 from langchain_community.document_transformers import LongContextReorder
 import os
 import time
+from typing import Tuple, List
 
-load_dotenv()
 
-OLLAMA_URL = os.getenv("OLLAMA_URL")
-tool_model_id = os.getenv("TOOL_MODEL_ID")
 
+
+
+
+def secure_auth_pairs() -> List[Tuple[str, str]]:
+    logins = os.getenv("SMOLAGENT_USERNAME", "").split()
+    passwords = os.getenv("SMOLAGENT_PASSWORD", "").split()
+    if len(logins) != len(passwords):
+        raise ValueError("Number of logins and passwords must match")
+    return list(zip(logins, passwords))
 
 # class RetrieverTool(Tool): # this one is for simple cosine similarity
 #     name = "retriever"
@@ -53,12 +60,13 @@ class RetrieverTool(Tool): # https://www.cs.cmu.edu/~jgc/publication/The_Use_MMR
     }
     output_type = "string"
 
-    def __init__(self, vector_store, **kwargs):
+    def __init__(self, vector_store, embeddings, **kwargs):
         super().__init__(**kwargs)
         self.vector_store = vector_store
-        self.hybrid_retriever = self._setup_hybrid_retriever(vector_store)
+        self.embeddings = embeddings
+        self.hybrid_retriever = self._setup_hybrid_retriever(vector_store, embeddings)
 
-    def _setup_hybrid_retriever(self, vector_store):
+    def _setup_hybrid_retriever(self, vector_store, embeddings):
         # Create similarity retriever
         retriever_sim = vector_store.as_retriever(
             search_type="similarity", search_kwargs={"k": 10}
@@ -95,44 +103,51 @@ class RetrieverTool(Tool): # https://www.cs.cmu.edu/~jgc/publication/The_Use_MMR
         )
 
 
-# Initialize vector store and embeddings
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-mpnet-base-v2",
-    model_kwargs={'device': 'cuda'}
-    )
-
-db_dir = os.path.join(os.path.dirname(__file__), "chroma_db")
-while not os.path.exists(db_dir):
-    time.sleep(60)
-vectordb = Chroma(collection_name="my_pdfs", 
-                  persist_directory=db_dir, 
-                  embedding_function=embeddings,
-                  collection_metadata={"hnsw:space": "cosine", "hnsw:construction_ef": 200},
-                  create_collection_if_not_exists=False)
-retriever_tool = RetrieverTool(vectordb)
-
-
-
-model = OpenAIServerModel(
-            model_id=tool_model_id,
-            api_base=OLLAMA_URL,
-            api_key="ollama",
-            max_tokens=32768,
-            temperature=0.0,
-        )
-
-
-agent = ToolCallingAgent(
-    tools=[retriever_tool],
-    model=model,
-    add_base_tools=False,
-    max_steps=1,
-
-)
 
 
 def main():
-    GradioUI(agent).launch(auth=(os.getenv("SMOLAGENT_USERNAME"), os.getenv("SMOLAGENT_PASSWORD")))
+    load_dotenv()
+
+    OLLAMA_URL = os.getenv("OLLAMA_URL")
+    tool_model_id = os.getenv("TOOL_MODEL_ID")
+    auth_pairs = secure_auth_pairs()
+
+    # Initialize vector store and embeddings
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-mpnet-base-v2",
+        model_kwargs={'device': 'cuda'}
+        )
+
+    db_dir = os.path.join(os.path.dirname(__file__), "chroma_db")
+    while not os.path.exists(db_dir):
+        time.sleep(60)
+    vectordb = Chroma(collection_name="my_pdfs", 
+                    persist_directory=db_dir, 
+                    embedding_function=embeddings,
+                    collection_metadata={"hnsw:space": "cosine", "hnsw:construction_ef": 200},
+                    create_collection_if_not_exists=False)
+    retriever_tool = RetrieverTool(vectordb, embeddings)
+
+
+
+    model = OpenAIServerModel(
+                model_id=tool_model_id,
+                api_base=OLLAMA_URL,
+                api_key="ollama",
+                max_tokens=32768,
+                temperature=0.0,
+            )
+
+
+    agent = ToolCallingAgent(
+        tools=[retriever_tool],
+        model=model,
+        add_base_tools=False,
+        max_steps=1,
+
+    )
+
+    GradioUI(agent).launch(auth=auth_pairs if len(auth_pairs) > 0 else None, pwa=True)
 
 if __name__ == "__main__":
     main()  

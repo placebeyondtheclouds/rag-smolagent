@@ -16,8 +16,6 @@ def ingest_pdfs_incrementally(data_dir: str, persist_directory: str):
 
     pdf_file_paths = glob.glob(os.path.join(data_dir, "**", "*.pdf"), recursive=True)
 
-
-
     embeddings = HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-mpnet-base-v2", #Max Sequence Length: 384, Dimensions: 768
         model_kwargs={'device': 'cuda'}
@@ -29,9 +27,7 @@ def ingest_pdfs_incrementally(data_dir: str, persist_directory: str):
         embedding_function=embeddings,
         persist_directory=persist_directory,
         collection_metadata={"hnsw:space": "cosine", "hnsw:construction_ef": 200},
-        
-    )
-
+        )
 
     with torch.device("cuda"):
         text_splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(
@@ -58,19 +54,29 @@ def ingest_pdfs_incrementally(data_dir: str, persist_directory: str):
                 vectordb.add_documents(documents=filtered_chunks)
 
         except Exception as e:
-            print(f"Error loading PDF file: {pdf_file}, error: {str(e)}")
+            message = f"Error loading PDF file: {pdf_file}, error: {str(e)}"
+            print(message)
+            with open("error_log.txt", "a") as f:
+                f.write(f'{message}\n')
             continue
         
     return vectordb
 
 
 def main():
-    data_dir = os.path.join(os.path.dirname(__file__), "data")
-    db_dir = os.path.join(os.path.dirname(__file__), "chroma_db")
-    
+    data_dir = os.path.join("data")
+    db_dir = os.path.join("chroma_db")
+    if os.path.exists("error_log.txt"):
+        os.remove("error_log.txt")
     print("Incrementally ingesting PDFs into the vector store...")
     vectordb = ingest_pdfs_incrementally(data_dir, db_dir)
     print(f"Vector store created and persisted at {db_dir}, total chunks: {len(vectordb.get()['ids'])}")
+    if os.path.exists("error_log.txt"):
+        with open("error_log.txt", 'r' ) as f:
+            text = f.read()
+            print(f'files with errors : {text.count("Error loading PDF file")}')
+            print(text)
+
 
 if __name__ == "__main__":
     main()
