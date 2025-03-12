@@ -18,7 +18,7 @@ The idea was to make a smart semantic search over my Zotero library. Very scalab
 ## todo
 
 - [x] hybrid search with Cosine distance and Maximum Marginal Relevance (MMR)
-- [ ] the tool returns only part of the metadata for some reason
+- [x] the tool returns only part of the metadata for some reason (that was because the old version of chromadb was used when ingesting the data)
 
 ## deploy
 
@@ -81,3 +81,4 @@ GRADIO_SERVER_NAME="0.0.0.0" GRADIO_SHARE="False" GRADIO_ANALYTICS_ENABLED="Fals
 - https://github.com/RvTechiNNovate/Vector-DB-Handbook/
 - https://www.cs.cmu.edu/~jgc/publication/The_Use_MMR_Diversity_Based_LTMIR_1998.pdf
 - https://kaustavmukherjee-66179.medium.com/improve-retrieval-of-documents-from-vectordb-using-maximum-marginal-relevance-mmr-for-balancing-f6ae56fb9512
+- https://docs.trychroma.com/docs/collections/configure

@@ -7,6 +7,7 @@ from langchain.retrievers.document_compressors import DocumentCompressorPipeline
 from langchain_community.document_transformers.embeddings_redundant_filter import EmbeddingsRedundantFilter
 from langchain_community.document_transformers import LongContextReorder
 import os
+import time
 
 load_dotenv()
 
@@ -101,7 +102,13 @@ embeddings = HuggingFaceEmbeddings(
     )
 
 db_dir = os.path.join(os.path.dirname(__file__), "chroma_db")
-vectordb = Chroma(collection_name="my_pdfs", persist_directory=db_dir, embedding_function=embeddings)
+while not os.path.exists(db_dir):
+    time.sleep(60)
+vectordb = Chroma(collection_name="my_pdfs", 
+                  persist_directory=db_dir, 
+                  embedding_function=embeddings,
+                  collection_metadata={"hnsw:space": "cosine", "hnsw:construction_ef": 200},
+                  create_collection_if_not_exists=False)
 retriever_tool = RetrieverTool(vectordb)
 
 
