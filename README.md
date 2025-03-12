@@ -1,6 +1,6 @@
 # local RAG agent (a part of my toolkit)
 
-The idea was to make a smart semantic search over my Zotero library. Very scalable incremental ingestion of a directory with pdfs (of those that are not already in the database). `PyPDFLoader` reads a pdf, `RecursiveCharacterTextSplitter` with `thenlper/gte-small` tokenizer (to avoid splitting mid-word) splits the text into chunks and Chroma ingests them with the metadata and embeddings calculated by `sentence-transformers/all-mpnet-base-v2`. Then `ToolCallingAgent` use LLM to form queries to the database and run the LLM over the retrieved content. All running locally.
+The idea was to make a smart semantic search over my Zotero library. Very scalable incremental ingestion of a directory with pdfs (of those that are not already in the database). `PyPDFLoader` reads a pdf, `RecursiveCharacterTextSplitter` with `thenlper/gte-small` tokenizer (to avoid splitting mid-word) splits the text into chunks and Chroma ingests them with the metadata and embeddings calculated by `sentence-transformers/all-mpnet-base-v2`. Then `ToolCallingAgent` use LLM to form queries to the database and run the LLM over the retrieved content. All running locally. Most of the time have to explicitly tell the model to use the tool.
 
 > [!WARNING]
 > work in progress
@@ -17,6 +17,7 @@ The idea was to make a smart semantic search over my Zotero library. Very scalab
 
 ## todo
 
+- [x] hybrid search with Cosine distance and Maximum Marginal Relevance (MMR)
 - [ ] the tool returns only part of the metadata for some reason
 
 ## deploy
@@ -78,3 +79,5 @@ GRADIO_SERVER_NAME="0.0.0.0" GRADIO_SHARE="False" GRADIO_ANALYTICS_ENABLED="Fals
 - https://github.com/coleam00/ottomator-agents/tree/main/r1-distill-rag
 - https://github.com/ernanhughes/deepresearch/blob/main/deepresearch/app.py
 - https://github.com/RvTechiNNovate/Vector-DB-Handbook/
+- https://www.cs.cmu.edu/~jgc/publication/The_Use_MMR_Diversity_Based_LTMIR_1998.pdf
+- https://kaustavmukherjee-66179.medium.com/improve-retrieval-of-documents-from-vectordb-using-maximum-marginal-relevance-mmr-for-balancing-f6ae56fb9512
