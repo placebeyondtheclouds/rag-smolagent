@@ -1,7 +1,6 @@
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
-# from langchain_community.vectorstores import Chroma
 from langchain_chroma import Chroma
 from dotenv import load_dotenv
 import os
@@ -9,10 +8,7 @@ import glob
 from tqdm import tqdm
 from transformers import AutoTokenizer
 import torch
-from concurrent.futures import ThreadPoolExecutor
-import concurrent.futures
-from typing import List, Tuple
-import multiprocessing as mp
+
 
 load_dotenv()
 
@@ -66,7 +62,6 @@ def ingest_pdfs_incrementally(data_dir: str, persist_directory: str):
             continue
         
     return vectordb
-
 
 
 def main():
