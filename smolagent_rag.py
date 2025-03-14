@@ -99,7 +99,7 @@ class RetrieverTool(Tool): # https://www.cs.cmu.edu/~jgc/publication/The_Use_MMR
         docs = self.hybrid_retriever.invoke(query)
         
         return "\nRetrieved documents:\n" + "".join(
-            [f"\n\n===== {doc.metadata}=====\n" + doc.page_content for i, doc in enumerate(docs)]
+            [f"\n\n===== Document start: {doc.metadata}=====\n" + doc.page_content + "\n===== Document end.=====\n" for doc in docs]
         )
 
 
@@ -118,7 +118,7 @@ def main():
         model_kwargs={'device': 'cuda'}
         )
 
-    db_dir = os.path.join(os.path.dirname(__file__), "chroma_db")
+    db_dir = os.path.join("chroma_db")
     while not os.path.exists(db_dir):
         time.sleep(60)
     vectordb = Chroma(collection_name="my_pdfs", 
@@ -144,7 +144,6 @@ def main():
         model=model,
         add_base_tools=False,
         max_steps=1,
-
     )
 
     GradioUI(agent).launch(auth=auth_pairs if len(auth_pairs) > 0 else None, pwa=True)
