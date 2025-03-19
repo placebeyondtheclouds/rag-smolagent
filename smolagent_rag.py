@@ -77,7 +77,7 @@ class RetrieverTool(Tool): # https://www.cs.cmu.edu/~jgc/publication/The_Use_MMR
             search_type="mmr", search_kwargs={"k": 10}
         )
         
-        # Combine retrievers
+        # Combine retrievers 
         merger = MergerRetriever(retrievers=[retriever_sim, retriever_mmr])
         
         # Set up filtering and reordering

@@ -12,16 +12,6 @@ ENV HF_HUB_DISABLE_TELEMETRY=1
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Shanghai
 
-# set up mirrors for debian bookworm distribution
-RUN <<EOF
-tee /etc/apt/sources.list <<-'EOF2'
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware
-deb https://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
-EOF2
-EOF
-
 # permissions and nonroot user for tightened security
 RUN adduser --disabled-password nonroot
 RUN mkdir /app/ && chown -R nonroot:nonroot /app
@@ -37,7 +27,16 @@ ENV VIRTUAL_ENV=/app/venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-COPY --chown=nonroot:nonroot ./pip.conf /app/venv/pip.conf
+RUN printf "[global]\n\
+timeout = 5\n\
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple\n\
+\n\
+trusted-host =\n\
+  pypi.tuna.tsinghua.edu.cn\n\
+  pypi.org\n\
+  pypi.python.org\n\
+  mirrors.aliyun.com\n\
+  pypi.mirrors.ustc.edu.cn\n" >/app/venv/pip.conf
 
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install --upgrade pip
