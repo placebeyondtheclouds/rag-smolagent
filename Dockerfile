@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.10-slim-bookworm
 
 ENV PYTHONUNBUFFERED=1
 
@@ -28,7 +28,7 @@ RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN printf "[global]\n\
-timeout = 5\n\
+timeout = 10\n\
 index-url = https://pypi.tuna.tsinghua.edu.cn/simple\n\
 \n\
 trusted-host =\n\
